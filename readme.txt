@@ -45,3 +45,7 @@ RedBrick is born.
 
 
 == Changelog ==
+
+= 1.0 =
+
+RedBrick is born.

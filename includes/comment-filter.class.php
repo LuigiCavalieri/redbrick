@@ -90,8 +90,11 @@ class CommentFilter {
         $this->checkKeywords();
         $this->checkContent();
         $this->checkAuthorHistory();
+
+        var_dump( $this->score );
+        exit;
         
-        return (int) ( $this->score >= 0 );
+        return ( $this->score >= 0 );
     }
 
     /**
@@ -182,9 +185,12 @@ class CommentFilter {
             if ( strlen( $url ) > 80 ) {
                 $this->updateScore( -1 );
             }
+            elseif ( $this->isShortURL( $url ) ) {
+                $this->updateScore( -5 );
+            }
             
             // Entrusted TLDs.
-            if ( preg_match( '#://.+\.(?:pl|jp|cn|info)#', $url ) ) {
+            if ( preg_match( '#://.+\.(?:pl|jp|cn|info|ly)#', $url ) ) {
                 $this->updateScore( -1 );
             }
             
@@ -199,6 +205,70 @@ class CommentFilter {
 
     /**
      * @since 1.0
+     * 
+     * @param string $url
+     * @return bool
+     */
+    private function isShortURL( $url ) {
+        if ( strlen( $url ) > 35 ) {
+            return false;
+        }
+
+        $components = parse_url( $url );
+
+        if ( 
+            isset( $components['user'] ) || isset( $components['pass'] ) || 
+            isset( $components['port'] ) || isset( $components['query'] ) || 
+            isset( $components['fragment'] )
+        ) {
+            $this->discardComment();
+        }
+
+        $path_parts       = explode( '/', $components['path'] );
+        $path_parts_count = count( $path_parts );
+
+        if ( $path_parts_count > 2 ) {
+           return false; 
+        }
+
+        // Checks the last path part.
+        if ( 
+            ( strlen( $path_parts[$path_parts_count-1] ) > 15 ) || 
+            preg_match( '#[^0-9a-zA-Z]+#', $path_parts[$path_parts_count-1] ) ) {
+            return false;
+        }
+
+        $host = $this->getHostFromURLComponents( $components );
+
+        if ( strlen( $host ) > 10 ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 1.0
+     * 
+     * @param array $components
+     * @return string
+     */
+    private function getHostFromURLComponents( $components ) {
+        if ( isset( $components['host'] ) ) {
+            return $components['host'];
+        }
+        
+        $first_slash_pos = strpos( $components['path'], '/' );
+
+        if ( $first_slash_pos === false ) {
+            return $components['path'];
+        }
+        
+        return substr( $components['path'], 0, $first_slash_pos );
+    }
+
+    /**
+     * @since 1.0
      * @return bool
      */
     private function checkWebsiteURL() {
@@ -206,36 +276,18 @@ class CommentFilter {
             return false;
         }
 
-        $old_score  = $this->score;
-        $components = parse_url( $this->websiteURL );
-
-        if ( isset( $components['user'] ) || isset( $components['pass'] ) || isset( $components['port'] ) ) {
+        if ( $this->isShortURL( $this->websiteURL ) ) {
             $this->discardComment();
         }
 
-        if ( 
-            ( isset( $components['host'] ) && isset( $components['path'] ) ) || 
-            isset( $components['query'] ) || 
-            isset( $components['fragment'] )
-        ) {
+        $old_score  = $this->score;
+        $components = parse_url( $this->websiteURL );
+
+        if ( isset( $components['host'] ) && isset( $components['path'] ) ) {
             $this->updateScore( -2 );
         }
 
-        if ( isset( $components['host'] ) ) {
-            $host = $components['host'];
-        }
-        else {
-            $first_slash_pos = strpos( $components['path'], '/' );
-
-            if ( $first_slash_pos === false ) {
-                $host = $components['path'];
-            }
-            else {
-                $host = substr( $components['path'], 0, $first_slash_pos );
-
-                $this->updateScore( -2 );
-            }
-        }
+        $host = $this->getHostFromURLComponents( $components );
 
         if (! preg_match( '/^.+\.[a-z]{2,10}$/i', $host ) ) {
             $this->discardComment();

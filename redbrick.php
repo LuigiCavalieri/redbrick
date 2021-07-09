@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: RedBrick
- * Plugin URI: 
+ * Plugin URI: https://wordpress.org/plugins/redbrick/
  * Description: Stand-alone anti-spam plugin for WordPress blogs.
  * Version: 1.0
  * Requires: 5.5

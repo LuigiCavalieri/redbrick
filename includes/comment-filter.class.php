@@ -81,7 +81,7 @@ class CommentFilter {
 
     /**
      * @since 1.0
-     * @return int
+     * @return string
      */
     public function validateComment() {
         $this->detectURLs();
@@ -90,8 +90,16 @@ class CommentFilter {
         $this->checkKeywords();
         $this->checkContent();
         $this->checkAuthorHistory();
+
+        if ( $this->score > 0 ) {
+            return 'approved';
+        }
+
+        if ( $this->score < -3 ) {
+            return 'spam';
+        }
         
-        return ( $this->score >= 0 );
+        return 'moderate';
     }
 
     /**

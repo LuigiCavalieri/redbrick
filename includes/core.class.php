@@ -92,20 +92,23 @@ final class Core extends BasePlugin {
         $filter = new CommentFilter( $comment_data );
 
         try {
-            $comment_approved = $filter->validateComment();
+            $validation_id = $filter->validateComment();
         } catch ( \Exception $e ) {
             $this->updateCounter( 'spam' );
             $this->goBack();
         }
-        
-        if ( $comment_approved ) {
-            $this->updateCounter( 'approved' );
-        }
-        else {
-            $this->updateCounter( 'moderate' );
 
-            // Forces the comment to be held in moderation.
-            add_filter( 'pre_comment_approved', function() { return 0; } );
+        $this->updateCounter( $validation_id );
+        
+        switch ( $validation_id ) {
+            case 'spam':
+                $this->goBack();
+                break;
+
+            case 'moderate':
+                // Forces the comment to be held in the moderation queue.
+                add_filter( 'pre_comment_approved', function() { return 0; } );
+                break;
         }
 
         return $comment_data;

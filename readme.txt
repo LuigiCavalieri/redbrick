@@ -1,6 +1,6 @@
-=== SiteTree ===
+=== RedBrick ===
 Author URI: https://luigicavalieri.com/
-Plugin URI:
+Plugin URI: https://wordpress.org/plugins/redbrick/
 Contributors: _luigi
 Tags: anti-spam, spam, comments
 Requires at least: 5.5
@@ -17,9 +17,9 @@ Stand-alone anti-spam plugin for WordPress blogs.
 
 RedBrick is able to block most of the automated spam comments a WordPress blog receives daily.
 
-It is based upon a score system ensuring that spam comments are blocked as soon as possible, so minimising the number of checks each comment must go through.
+It is based upon a score system that ensures spam comments are blocked as soon as possible, so as to minimise the number of checks each comment must go through. When in doubt, RedBrick always holds the comment in the moderation queue.
 
-**The plugin is designed to work on small-to-medium traffic blogs.**
+**The plugin is designed to work on low-to-medium traffic blogs.**
 
 
 == Installation ==

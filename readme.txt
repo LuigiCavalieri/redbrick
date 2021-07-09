@@ -10,7 +10,7 @@ Stable tag: 1.0
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-Stand-alone anti-spam plugin for WordPress blogs.
+Simple anti-spam plugin for WordPress blogs.
 
 
 == Description ==

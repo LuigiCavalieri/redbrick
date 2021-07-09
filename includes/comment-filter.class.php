@@ -90,9 +90,6 @@ class CommentFilter {
         $this->checkKeywords();
         $this->checkContent();
         $this->checkAuthorHistory();
-
-        var_dump( $this->score );
-        exit;
         
         return ( $this->score >= 0 );
     }

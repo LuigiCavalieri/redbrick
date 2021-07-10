@@ -226,7 +226,9 @@ class CommentFilter {
             isset( $components['port'] ) || isset( $components['query'] ) || 
             isset( $components['fragment'] )
         ) {
-            $this->discardComment();
+            $this->updateScore( -1 );
+
+            return false;
         }
 
         $path_parts       = explode( '/', $components['path'] );

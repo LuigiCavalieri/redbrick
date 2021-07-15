@@ -76,7 +76,7 @@ class CommentFilter {
         $this->email          = $comment_data['comment_author_email'];
         $this->websiteURL     = $comment_data['comment_author_url'];
         $this->IP             = ( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '' );
-        $this->content['raw'] = $comment_data['comment_content'];
+        $this->content['raw'] = stripslashes( $comment_data['comment_content'] );
     }
 
     /**
@@ -180,7 +180,12 @@ class CommentFilter {
         $num_of_hyperlinks = $this->numOfURLs - $num_of_plain_urls;
 
         if ( $num_of_hyperlinks ) {
-           $this->updateScore( -5 * $num_of_hyperlinks );
+            $this->updateScore( -5 * $num_of_hyperlinks );
+
+            // Looks for hyperlinks with more than one attribute.
+            if ( preg_match( '#<a\s+([a-z]+=\s*"[^"]*"\s*){2,}>#i', $this->content['raw'] ) ) {
+                $this->updateScore( -5 );
+            }
         }
         elseif ( $this->numOfURLs > 1 ) {
             $this->updateScore( -$this->numOfURLs );
@@ -228,6 +233,10 @@ class CommentFilter {
         ) {
             $this->updateScore( -1 );
 
+            return false;
+        }
+
+        if (! isset( $components['path'] ) ) {
             return false;
         }
 
@@ -310,7 +319,7 @@ class CommentFilter {
         }
 
         if ( $old_score == $this->score ) {
-            $this->updateScore( 2 );
+            $this->updateScore( 1 );
 
             return true;
         }
@@ -357,7 +366,7 @@ class CommentFilter {
         }
 
         if ( $old_score == $this->score ) {
-            $this->updateScore( 2 );
+            $this->updateScore( 1 );
 
             return true;
         }
@@ -372,7 +381,7 @@ class CommentFilter {
     private function checkKeywords() {
         $escaped_name = preg_quote( $this->name, '#' );
         
-        if ( preg_match( "#<a[^>]*>{$escaped_name}</a>#i", $this->content['raw'] ) ) {
+        if ( preg_match( "#<a\s+[^>]*>{$escaped_name}</a>#i", $this->content['raw'] ) ) {
             $this->updateScore( -5 );
         }
     }

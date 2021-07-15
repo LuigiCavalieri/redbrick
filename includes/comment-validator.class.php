@@ -8,7 +8,7 @@ namespace RedBrick;
  *
  * @since 1.0
  */
-class CommentFilter {
+class CommentValidator {
     /**
      * @since 1.0
      */

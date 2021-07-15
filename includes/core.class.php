@@ -87,12 +87,12 @@ final class Core extends BasePlugin {
      * @return array
      */
     public function wpWillProcessComment( $comment_data ) {
-        $this->load( 'includes/comment-filter.class.php' );
+        $this->load( 'includes/comment-validator.class.php' );
 
-        $filter = new CommentFilter( $comment_data );
+        $validator = new CommentValidator( $comment_data );
 
         try {
-            $validation_id = $filter->validateComment();
+            $validation_id = $validator->validateComment();
         } catch ( \Exception $e ) {
             $this->updateCounter( 'spam' );
             $this->goBack();

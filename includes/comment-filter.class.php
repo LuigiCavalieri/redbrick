@@ -366,7 +366,7 @@ class CommentFilter {
         }
 
         if ( $old_score == $this->score ) {
-            $this->updateScore( 1 );
+            $this->updateScore( 2 );
 
             return true;
         }

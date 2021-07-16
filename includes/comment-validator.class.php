@@ -342,12 +342,19 @@ class CommentValidator {
             $this->updateScore( -1 );
         }
 
-        // Looking for collections of numbers.
         $name_and_email = $this->name . ' ' . $this->email;
-        $num_matches    = (int) preg_match_all( '/[0-9]{5,}/', $name_and_email );
+        $num_matches    = (int) preg_match_all( '/[0-9]/', $name_and_email );
         
-        $this->updateScore( -$num_matches );
-            
+        if ( $num_matches > 4 ) {
+            $this->updateScore( 4 - $num_matches );
+        }
+
+        $num_matches = (int) preg_match_all( '/\./', $this->email );
+        
+        if ( $num_matches > 3 ) {
+            $this->updateScore( 3 - $num_matches );
+        }
+
         if (
             // Name doesn't have at least one latin vowel.
             !preg_match( '/[aeiou]+/i', $this->name ) ||

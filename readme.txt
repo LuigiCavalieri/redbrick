@@ -5,7 +5,7 @@ Contributors: _luigi
 Tags: anti-spam, spam, comments
 Requires at least: 5.5
 Tested up to: 5.7.2
-Requires PHP: 5.6.20
+Requires PHP: 7.0
 Stable tag: 1.0
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
@@ -48,6 +48,6 @@ RedBrick is born.
 
 == Changelog ==
 
-= 1.0 =
+= 1.0 (19 July 2021) =
 
 RedBrick is born.

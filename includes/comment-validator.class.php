@@ -76,7 +76,7 @@ class CommentValidator {
         $this->email          = $comment_data['comment_author_email'];
         $this->websiteURL     = $comment_data['comment_author_url'];
         $this->IP             = ( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '' );
-        $this->content['raw'] = stripslashes( $comment_data['comment_content'] );
+        $this->content['raw'] = str_replace( '\\', '', $comment_data['comment_content'] );
     }
 
     /**

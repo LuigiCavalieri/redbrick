@@ -102,7 +102,7 @@ final class Core extends BasePlugin {
         
         switch ( $validation_id ) {
             case 'spam':
-                $this->goBack();
+                $this->goBack( $comment_data['comment_post_ID'] );
                 break;
 
             case 'moderate':
@@ -131,13 +131,14 @@ final class Core extends BasePlugin {
 
     /**
      * @since 1.0
+     * @param int $post_id
      */
-    private function goBack() {
+    private function goBack( $post_id ) {
         if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
             $redirect_url = $_SERVER['HTTP_REFERER'];
         }
         else {
-            $post         = get_post( $comment_data['comment_post_ID'] );
+            $post         = get_post( $post_id );
             $redirect_url = ( $post ? get_permalink( $post ) : home_url() );
         }
 

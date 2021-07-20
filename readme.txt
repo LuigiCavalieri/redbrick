@@ -6,7 +6,7 @@ Tags: anti-spam, spam, comments
 Requires at least: 5.5
 Tested up to: 5.7.2
 Requires PHP: 7.0
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -47,6 +47,11 @@ RedBrick is born.
 
 
 == Changelog ==
+
+= 1.0.1 (20 July 2021) =
+
+Fixed a PHP notice and improved the detection of hyperlinks with multiple attributes.
+
 
 = 1.0 (19 July 2021) =
 

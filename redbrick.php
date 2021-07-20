@@ -12,7 +12,7 @@
  *
  *
  * @package RedBrick
- * @version 1.0
+ * @version 1.0.1
  * @copyright Copyright 2021 Luigi Cavalieri.
  * @license https://opensource.org/licenses/GPL-3.0 GPL v3.0
  * 

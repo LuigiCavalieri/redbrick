@@ -4,9 +4,9 @@ Plugin URI: https://wordpress.org/plugins/redbrick/
 Contributors: _luigi
 Tags: anti-spam, spam, comments
 Requires at least: 5.5
-Tested up to: 5.7.2
+Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -47,6 +47,11 @@ RedBrick is born.
 
 
 == Changelog ==
+
+= 1.0.2 (22 July 2021) =
+
+Fixed a PHP error that could arise when spam was detected.
+
 
 = 1.0.1 (20 July 2021) =
 

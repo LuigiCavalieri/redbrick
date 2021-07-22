@@ -3,7 +3,7 @@
  * Plugin Name: RedBrick
  * Plugin URI: https://wordpress.org/plugins/redbrick/
  * Description: Simple anti-spam plugin for WordPress blogs.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires: 5.5
  * Author: Luigi Cavalieri
  * Author URI: https://luigicavalieri.com
@@ -12,7 +12,7 @@
  *
  *
  * @package RedBrick
- * @version 1.0.1
+ * @version 1.0.2
  * @copyright Copyright 2021 Luigi Cavalieri.
  * @license https://opensource.org/licenses/GPL-3.0 GPL v3.0
  * 

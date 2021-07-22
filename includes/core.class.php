@@ -45,7 +45,7 @@ final class Core extends BasePlugin {
                 }
                 break;
 
-            case 'wp-comments-post.php':
+            default:
                 add_filter( 'preprocess_comment', array( $this, 'wpWillProcessComment' ), 1 );
                 break;
         }

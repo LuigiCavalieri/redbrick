@@ -133,12 +133,12 @@ final class Core extends BasePlugin {
      * @since 1.0
      * @param int $post_id
      */
-    private function goBack( $post_id ) {
+    private function goBack( $post_id = 0 ) {
         if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
             $redirect_url = $_SERVER['HTTP_REFERER'];
         }
         else {
-            $post         = get_post( $post_id );
+            $post         = ( ( $post_id > 0 ) ? get_post( $post_id ) : null );
             $redirect_url = ( $post ? get_permalink( $post ) : home_url() );
         }
 

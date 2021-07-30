@@ -34,20 +34,13 @@ final class Core extends BasePlugin {
      * @since 1.0
      */
     public function pluginDidFinishLaunching() {
-        global $pagenow;
-
         $this->verifyVersionOfStoredData();
 
-        switch ( $pagenow ) {
-            case 'index.php':
-                if ( is_admin() ) {
-                    add_action( 'wp_dashboard_setup', array( $this, 'wpDidSetupDashboard' ) );
-                }
-                break;
-
-            default:
-                add_filter( 'preprocess_comment', array( $this, 'wpWillProcessComment' ), 1 );
-                break;
+        if ( is_admin() ) {
+            add_action( 'wp_dashboard_setup', array( $this, 'wpDidSetupDashboard' ) );
+        }
+        else {
+            add_filter( 'preprocess_comment', array( $this, 'wpWillProcessComment' ), 1 );
         }
     }
 

@@ -200,7 +200,7 @@ class CommentValidator {
             }
             
             // Entrusted TLDs.
-            if ( preg_match( '#://.+\.(?:pl|jp|cn|info|ly)#', $url ) ) {
+            if ( preg_match( '#://.+\.(?:pl|jp|cn|info|ly|st)#', $url ) ) {
                 $this->updateScore( -1 );
             }
             

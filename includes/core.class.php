@@ -92,7 +92,7 @@ final class Core extends BasePlugin {
         }
 
         $this->updateCounter( $validation_id );
-        
+
         switch ( $validation_id ) {
             case 'spam':
                 $this->goBack( $comment_data['comment_post_ID'] );
@@ -103,6 +103,8 @@ final class Core extends BasePlugin {
                 add_filter( 'pre_comment_approved', function() { return 0; } );
                 break;
         }
+
+        add_action( 'wp_insert_comment', array( $this, 'wpDidInsertComment' ) );
 
         return $comment_data;
     }
@@ -120,6 +122,18 @@ final class Core extends BasePlugin {
 
         $this->db->setOption( $counter_id, ++$count, 'counters' );
         $this->db->setOption( 'last_processed_time', time() );
+    }
+
+    /**
+     * @since 1.0.3
+     * @param int $id
+     */
+    public function wpDidInsertComment( $id ) {
+        $id = (int) $id;
+
+        if ( $id > 0 ) {
+            $this->db->setOption( 'last_processed_comment_id', $id );
+        }
     }
 
     /**
@@ -164,7 +178,16 @@ final class Core extends BasePlugin {
             $counters[$key] = ( isset( $counters[$key] ) ? (int) $counters[$key] : 0 );
         }
 
-        echo '<p>', sprintf( __( '%1$s comments were blocked, %2$s were held in the moderation queue, while %3$s passed checks.', 'redbrick' ), "<strong>{$counters['spam']}</strong>", "<strong>{$counters['moderate']}</strong>", "<strong>{$counters['approved']}</strong>" ), '</p>'; 
+        echo '<p>';
+
+        printf( 
+            __( '%1$s comments were blocked, %2$s were held in the moderation queue, while %3$s passed checks.', 'redbrick' ),
+            "<strong>{$counters['spam']}</strong>",
+            "<strong>{$counters['moderate']}</strong>", 
+            "<strong>{$counters['approved']}</strong>"
+        );
+
+        echo '</p>'; 
         
         $gm_time = (int) $this->db->getOption( 'last_processed_time' );
 
@@ -173,7 +196,14 @@ final class Core extends BasePlugin {
             $time      = $gm_time + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
             $date_time = '<em>' . date_i18n( $format, $time ) . '</em>';
 
-            echo '<p><small>', sprintf( __( 'The last comment was processed on %s.', 'redbrick' ), $date_time ), '</small></p>';
+            $comment_id      = (int) $this->db->getOption( 'last_processed_comment_id' );
+            $comment_id_text = ( $comment_id > 0 ) ? ( '(#' . $comment_id . ')' ) : '';
+
+            echo '<p><small>';
+
+            printf( __( 'The last comment %1$s was processed on %2$s.', 'redbrick' ), $comment_id_text, $date_time );
+
+            echo '</small></p>';
         }
 
         return true;

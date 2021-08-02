@@ -6,7 +6,7 @@ Tags: anti-spam, spam, comments
 Requires at least: 5.5
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -47,6 +47,11 @@ RedBrick is born.
 
 
 == Changelog ==
+
+= 1.0.3 (2 August 2021) =
+
+If available, RedBrick shows in the WordPress Dashboard also the ID of the last processed comment.
+
 
 = 1.0.2 (22 July 2021) =
 

@@ -129,6 +129,7 @@ final class Core extends BasePlugin {
 
         $this->db->setOption( $counter_id, ++$count, 'counters' );
         $this->db->setOption( 'last_processed_time', time() );
+        $this->db->setOption( 'last_processed_comment_id', 0 );
     }
 
     /**

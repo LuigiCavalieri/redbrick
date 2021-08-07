@@ -199,15 +199,7 @@ class CommentValidator {
                 $this->updateScore( -5 );
             }
             
-            // Entrusted TLDs.
-            if ( preg_match( '#://.+\.(?:pl|jp|cn|info|ly|st)#', $url ) ) {
-                $this->updateScore( -1 );
-            }
-            
-            // Contains uncommon characters.
-            if ( preg_match( '#[^.:_a-zA-Z0-9/-]+#', $url ) ) {
-                $this->updateScore( -1 );
-            }
+            $this->doURLCheckup( $url );
         }
         
         return true;
@@ -284,6 +276,27 @@ class CommentValidator {
     }
 
     /**
+     * @since 1.0.4
+     * @param string $url
+     */
+    private function doURLCheckup( $url ) {
+        // Checks TLD length.
+        if (! preg_match( '#://.+\.[a-z]{2,10}#i', $url ) ) {
+            $this->discardComment();
+        }
+
+        // Entrusted TLD?
+        if ( preg_match( '#://.+\.(?:pl|jp|cn|info|ly|st|site|online)#i', $url ) ) {
+            $this->updateScore( -1 );
+        }
+        
+        // Does it contain uncommon characters?
+        if ( preg_match( '#[^.:_a-zA-Z0-9/-]+#', $url ) ) {
+            $this->updateScore( -1 );
+        }
+    }
+
+    /**
      * @since 1.0
      * @return bool
      */
@@ -296,7 +309,10 @@ class CommentValidator {
             $this->discardComment();
         }
 
-        $old_score  = $this->score;
+        $old_score = $this->score;
+
+        $this->doURLCheckup( $this->websiteURL );
+
         $components = parse_url( $this->websiteURL );
 
         if ( isset( $components['host'] ) && isset( $components['path'] ) ) {
@@ -304,10 +320,6 @@ class CommentValidator {
         }
 
         $host = $this->getHostFromURLComponents( $components );
-
-        if (! preg_match( '/^.+\.[a-z]{2,10}$/i', $host ) ) {
-            $this->discardComment();
-        }
 
         foreach ( $this->URLs as $url ) {
             if ( $url == $this->websiteURL ) {

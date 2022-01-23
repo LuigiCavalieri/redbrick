@@ -4,7 +4,7 @@ Plugin URI: https://wordpress.org/plugins/redbrick/
 Contributors: _luigi
 Tags: anti-spam, spam, comments
 Requires at least: 5.5
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
 Stable tag: 1.0.4
 License: GPLv3
